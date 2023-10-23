@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+package grpc;
+
+option go_package = "url-shortener/internal/proto";
+
+message GetLongUrlRequest {
+  string id = 1;
+}
+
+message GetShortUrlRequest {
+  string long_url = 1;
+}
+
+message GetShortUrlResponse {
+  string short_url = 1;
+}
+
+message UrlData {
+  string short_url = 1;
+  string original_url = 2;
+}
+
+message GetUrlsResponse {
+  repeated UrlData urls = 1;
+}
+
+message DeleteUrlsRequest {
+  repeated string urls = 1;
+}
+
+service Shortener {
+  rpc GetLongUrl(GetLongUrlRequest) returns (google.protobuf.Empty);
+  rpc GetShortUrl(GetShortUrlRequest) returns (GetShortUrlResponse);
+  rpc GetUrls(google.protobuf.Empty) returns (GetUrlsResponse);
+  rpc DeleteUrls(DeleteUrlsRequest) returns (google.protobuf.Empty);
+  rpc PingDb(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
